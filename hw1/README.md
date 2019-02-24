@@ -41,6 +41,8 @@ Hypervisor分为native和hosted两种：
 虚拟机技术在硬件层次上进行抽象和隔离，而容器技术只在操作系统层次上进行，故宿主系统内核上的安全问题可能对容器的安全性造成威胁。<br>
 由此，虚拟机在安全性上要优于容器技术。
 
+<br>
+
 ### 利用LXC Python API的测试代码：
 https://github.com/cabbby/osprac/blob/master/hw1/lxc_test.py
 
