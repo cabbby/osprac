@@ -37,14 +37,14 @@ Hypervisor分为native和hosted两种：
 虚拟机技术在硬件层次上进行抽象和隔离，而容器技术只在操作系统层次上进行，故宿主系统内核上的安全问题可能对容器的安全性造成威胁。<br>
 由此，虚拟机在安全性上要优于容器技术。
 
-## EX：简要比较LXC 和 Docker：
+## EX：简要比较LXC 和 Docker
 LXC容器在功能上类似于一个完整的操作系统，在一个容器中往往包含多个应用。在这一点上，它更多地作为传统VM的替代使用。
 
 Docker起初以LXC作为底层支持，后来单独开发了libcontainer替代LXC。
 Docker容器面向应用，一个容器中只有一个应用。故它更加轻量、易于迁移和组合。
 出于轻量级容器的考虑，Docker不允许数据的持久存储，故容器销毁时所有修改都不会被保存。如果要长期保存数据，则需要挂载宿主机的文件系统或使用外部存储。
 
-## 利用LXC Python API的测试代码：
+## 利用LXC Python API的测试代码
 https://github.com/cabbby/osprac/blob/master/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%9C%E4%B8%9A/lxc_test.py
 
 <br>
