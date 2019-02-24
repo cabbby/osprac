@@ -44,7 +44,7 @@ Hypervisor分为native和hosted两种：
 <br>
 
 ### 利用LXC Python API的测试代码：
-https://github.com/cabbby/osprac/blob/master/hw1/lxc_test.py
+https://github.com/cabbby/osprac/blob/master/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%9C%E4%B8%9A/lxc_test.py
 
 <br>
 
