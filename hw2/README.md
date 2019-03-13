@@ -1,13 +1,13 @@
 # 操统实习 第二次报告
 
-### **rootfs 制作流程**
+## **rootfs 制作流程**
 
 
-### **fakeContainer - CPU 压力测试**
+## **fakeContainer - CPU 压力测试**
 
 在 fakeContainer.c 中，通过 cgroup 将可用 CPU 限制为了 CPU0
 
-#### 测试 1
+### 测试 1
 ```
 stress -c 2
 ```
@@ -21,11 +21,11 @@ stress -c 2
 如果不用 cgroup 限制可用的 CPU，则两个 CPU 会同时执行进程。
 
 
-### **fakeContainer - 内存压力测试**
+## **fakeContainer - 内存压力测试**
 
 在 fakeContainer.c 中，通过 cgroup 限制最大可用内存为 512M
 
-#### 测试 1
+### 测试 1
 ```
 stress --vm 1 --vm-bytes 510M --vm-keep
 ```
@@ -38,7 +38,7 @@ top 的 VIRT 列为进程总的虚拟内存占用量，RES 列为实际物理内
 
 结果与参数基本吻合。
 
-#### 测试 2
+### 测试 2
 ```
 stress --vm 1 --vm-bytes 1024M --vm-keep
 ```
@@ -51,7 +51,7 @@ stress --vm 1 --vm-bytes 1024M --vm-keep
 
 总和 USED 为 1G。
 
-#### 测试 3
+### 测试 3
 ```
 stress --vm 1 --vm-bytes 1536M --vm-keep
 ```
@@ -62,7 +62,7 @@ stress --vm 1 --vm-bytes 1536M --vm-keep
 
 此时物理内存用量受限制，为 512M。超出部分 1G 使用 swap。
 
-#### 测试 4
+### 测试 4
 ```
 stress --vm 1 --vm-bytes 2048M --vm-keep
 ```
@@ -73,7 +73,7 @@ stress --vm 1 --vm-bytes 2048M --vm-keep
 
 可以发现，进程申请的内存空间超过物理内存限制和 swap 总和后，程序被强行终止。
 
-#### 测试 5
+### 测试 5
 ```
 stress --vm 1 --vm-bytes 512M --vm-keep
 ```
@@ -90,7 +90,7 @@ stress --vm 1 --vm-bytes 512M --vm-keep
 
 原因尚需进一步了解。
 
-#### 容器内进程内存占用超出 cgroup 限制后的行为
+### 容器内进程内存占用超出 cgroup 限制后的行为
 
 一个进程可以申请一定量的虚拟内存：
 * 在虚拟内存量不超过 cgroup 的物理内存限制时，虚拟内存会直接映射到物理内存
