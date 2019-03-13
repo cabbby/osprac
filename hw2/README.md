@@ -1,9 +1,16 @@
-# 操统实习 第二次报告
+# 操统实习 第二次报告 fakeContainer
 
 ## **rootfs 制作流程**
 
+lxc-ubuntu:
+1. 下载 minimal ubuntu 的相关文件到 cache
+2. 通过 btrfs 快照或使用 rsync，将文件从 cache 复制到 rootfs
+3. 对 rootfs 进行主机名、网络、用户、语言、ssh 等设置
+4. 将 lxc 的一些设置复制到 rootfs 中
+5. 进行收尾工作，如配置 apt 、安装软件包、设置时区等
+6. 最后对 rootfs 中用户进行一些权限配置
 
-## **fakeContainer - CPU 压力测试**
+## **CPU 压力测试**
 
 在 fakeContainer.c 中，通过 cgroup 将可用 CPU 限制为了 CPU0
 
@@ -14,14 +21,14 @@ stress -c 2
 
 这一命令调用 stress 创建了两个不断执行 sqrt 的进程，测试结果如下：
 
-![avatar](https://github.com/cabbby/osprac/blob/master/hw2/pics/test_cpu_2.png)
+![](https://github.com/cabbby/osprac/blob/master/hw2/pics/test_cpu_2.png)
 
 可以看到，使用 cgroup 后，进程仅能执行在 CPU0 上。
 
 如果不用 cgroup 限制可用的 CPU，则两个 CPU 会同时执行进程。
 
 
-## **fakeContainer - 内存压力测试**
+## **内存压力测试**
 
 在 fakeContainer.c 中，通过 cgroup 限制最大可用内存为 512M
 
@@ -32,9 +39,9 @@ stress --vm 1 --vm-bytes 510M --vm-keep
 
 创建了一个申请 510M 内存并不断对其读写的进程，测试结果如下：
 
-![avatar](https://github.com/cabbby/osprac/blob/master/hw2/pics/test_mem_510M.png)
+![](https://github.com/cabbby/osprac/blob/master/hw2/pics/test_mem_510M.png)
 
-top 的 VIRT 列为进程总的虚拟内存占用量，RES 列为实际物理内存占用量，SWAP 列为交换空间占用量，USED = RES + SWAP。
+VIRT, RES, SWAP 列分别为 虚拟内存总占用量、实际物理内存占用量，交换空间占用量。USED = RES + SWAP。
 
 结果与参数基本吻合。
 
@@ -45,7 +52,7 @@ stress --vm 1 --vm-bytes 1024M --vm-keep
 
 创建了一个申请 1024M 内存并不断对其读写的进程，测试结果如下：
 
-![avatar](https://github.com/cabbby/osprac/blob/master/hw2/pics/test_mem_1024M.png)
+![](https://github.com/cabbby/osprac/blob/master/hw2/pics/test_mem_1024M.png)
 
 进程的物理内存量受 cgroup 限制，基本和参数符合。同时超出部分使用 swap 进行交换。两者都近似 512M。
 
@@ -58,7 +65,7 @@ stress --vm 1 --vm-bytes 1536M --vm-keep
 
 创建了一个申请 1536M 内存并不断对其读写的进程，测试结果如下：
 
-![avatar](https://github.com/cabbby/osprac/blob/master/hw2/pics/test_mem_1536M.png)
+![](https://github.com/cabbby/osprac/blob/master/hw2/pics/test_mem_1536M.png)
 
 此时物理内存用量受限制，为 512M。超出部分 1G 使用 swap。
 
@@ -69,7 +76,7 @@ stress --vm 1 --vm-bytes 2048M --vm-keep
 
 创建了一个申请 2048M 内存并不断对其读写的进程，测试结果如下：
 
-![avatar](https://github.com/cabbby/osprac/blob/master/hw2/pics/test_mem_2048M.png)
+![](https://github.com/cabbby/osprac/blob/master/hw2/pics/test_mem_2048M.png)
 
 可以发现，进程申请的内存空间超过物理内存限制和 swap 总和后，程序被强行终止。
 
@@ -80,7 +87,7 @@ stress --vm 1 --vm-bytes 512M --vm-keep
 
 创建了一个申请 512M 内存并不断对其读写的进程，测试结果如下：
 
-![avatar](https://github.com/cabbby/osprac/blob/master/hw2/pics/test_mem_512M.png)
+![](https://github.com/cabbby/osprac/blob/master/hw2/pics/test_mem_512M.png)
 
 可以发现，由于申请内存和 cgroup 限制近似相等，进程本身基本没有占用 swap。
 
@@ -96,3 +103,18 @@ stress --vm 1 --vm-bytes 512M --vm-keep
 * 在虚拟内存量不超过 cgroup 的物理内存限制时，虚拟内存会直接映射到物理内存
 * 当虚拟内存量超出限制时，进程并不会出错。超过的部分将会通过 swap 机制利用磁盘空间进行交换
 * 当虚拟内存量超出 (物理内存限制 + swap 大小) 时，进程会被 OOM Killer 杀死
+
+
+## 改进设想
+
+* 初始进程 <br>
+考虑停止容器时的情况。<br>
+fakeContainer 的初始进程为 bash，它接受 SIGTERM 信号时并不会将 SIGTERM 转发到子进程。如果在 host 上通过 kill 向容器初始进程发送一个 SIGTERM，会导致容器中所有进程被杀死，但是容器初始进程并未回收它的子进程。这会导致 zombie process 的产生。<br>
+很自然的想法是在 bash 结束时向所有子进程发送信号。但 bash 是可能在它的子进程全部终止之前就结束的。因此还需要等待所有子进程结束才能终止。<br>
+因此我们需要一个自定义一个更完善的容器初始进程来解决这些问题。同时，还可以利用它来实现一些容器内日志记录等功能。
+
+* 资源隔离 <br>
+fakeContainer 的资源隔离功能还很有限，例如无法控制 CPU使用率、 swap 的使用、IO 吞吐量等等。
+
+* 网络 <br>
+容器显然需要某种方式，来与主机或其他容器进行通信。由于它们在逻辑上都是互相隔离的机器，因此网络便是一个很好的途径。同时，很多应用场景本身也需要与网络上其他机器进行通信。故，让容器支持网络是一个很重要的待改进处。
