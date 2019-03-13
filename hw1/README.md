@@ -45,7 +45,7 @@ Docker容器面向应用，一个容器中只有一个应用。故它更加轻�
 出于轻量级容器的考虑，Docker不允许数据的持久存储，故容器销毁时所有修改都不会被保存。如果要长期保存数据，则需要挂载宿主机的文件系统或使用外部存储。
 
 ## 利用LXC Python API的测试代码
-https://github.com/cabbby/osprac/blob/master/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%9C%E4%B8%9A/lxc_test.py
+https://github.com/cabbby/osprac/blob/master/hw1/lxc_test.py
 
 <br>
 
