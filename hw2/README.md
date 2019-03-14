@@ -14,7 +14,7 @@
 
 ## CPU 压力测试
 
-在 fakeContainer.c 中，通过 cgroup 将可用 CPU 限制为了 CPU0
+在 fakeContainer.c 中，通过 cgroup 将可用 CPU 限制为 CPU0
 
 ### 测试 1
 ```
