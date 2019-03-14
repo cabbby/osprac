@@ -1,5 +1,7 @@
 # 操统实习 第二次报告 fakeContainer
 
+代码：[fakeContain.c](https://github.com/cabbby/osprac/blob/master/hw2/fakeContainer/fakeContainer.c)
+
 ## **rootfs 制作流程**
 
 lxc-ubuntu:
