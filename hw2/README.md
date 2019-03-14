@@ -1,18 +1,16 @@
 # 操统实习 第二次报告 fakeContainer
 
-代码：[fakeContain.c](https://github.com/cabbby/osprac/blob/master/hw2/fakeContainer/fakeContainer.c)
+## rootfs 制作流程
 
-## **rootfs 制作流程**
-
-lxc-ubuntu:
-1. 下载 minimal ubuntu 的相关文件到 cache
+以 lxc-ubuntu 为例:
+1. 下载 ubuntu 的相关文件到 cache
 2. 通过 btrfs 快照或使用 rsync，将文件从 cache 复制到 rootfs
 3. 对 rootfs 进行主机名、网络、用户、语言、ssh 等设置
 4. 将 lxc 的一些设置复制到 rootfs 中
 5. 进行收尾工作，如配置 apt 、安装软件包、设置时区等
 6. 最后对 rootfs 中用户进行一些权限配置
 
-## **CPU 压力测试**
+## CPU 压力测试
 
 在 fakeContainer.c 中，通过 cgroup 将可用 CPU 限制为了 CPU0
 
@@ -30,7 +28,7 @@ stress -c 2
 如果不用 cgroup 限制可用的 CPU，则两个 CPU 会同时执行进程。
 
 
-## **内存压力测试**
+## 内存压力测试
 
 在 fakeContainer.c 中，通过 cgroup 限制最大可用内存为 512M
 
