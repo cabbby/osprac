@@ -10,6 +10,10 @@
 
 在 INPUT 链上丢弃所有来自 162.105.175.60 的包：
 
+![](https://github.com/cabbby/osprac/blob/master/hw3/pics/m2_1.png)
+
+再观察 ping 的输出：
+
 ![](https://github.com/cabbby/osprac/blob/master/hw3/pics/m1_2.png)
 
 可以发现 ping 没有新的显示，说明 iptables 起效。
