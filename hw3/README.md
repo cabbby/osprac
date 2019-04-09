@@ -1,5 +1,15 @@
 # 操统实习 第三次报告
 
+## Linux 网络包处理过程
+
+网络包到达时，先经过 PREROUTING 链。如果目的地为本机，则进入 INPUT 链，否则进入 FORWARD 链。进入 INPUT 链的包被本机进程处理后，发出的包进入 OUTPUT 链。包经过 FORWARD 链和 OUTPUT 链后再进入 POSTROUTING 链，最后发出。
+
+* PREROUTING 链包含表 raw, mangle, nat
+* FORWARD 链包含 mangle, filter 表
+* POSTROUTING 链包含 mangle, nat 表
+* INPUT 链包含 mangle, nat 表
+* OUTPUT 链包含 raw, mangle, nat, filter 表
+
 ## iptables 测试
 
 ### 拒绝来自某一特定 IP 地址的访问
@@ -65,3 +75,15 @@ iptables -A OUTPUT -d 162.105.175.60 -p icmp --icmp-type echo-reply -j DROP
 ```
 
 可以验证，执行命令后，162.105.175.60 无法 ping 通本机。
+
+## "路由" 和 "交换" 的区别
+
+* 路由在网络层，路由器根据 IP 地址寻址；交换机在数据链路层，根据 MAC 地址寻址。路由器可以处理 TCP/IP 协议，交换机不可以。
+
+* 路由器将一个 IP 分配给多台机器使用，对外只表现为一个 IP；交换机将多个主机连接起来，每台主机对外有不同的 IP。
+
+* 路由器可以提供防火墙功能；交换机不可以。
+
+## fakeContainer 网络实现
+
+TODO
