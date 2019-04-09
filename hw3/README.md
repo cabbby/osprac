@@ -34,7 +34,25 @@
 
 ### 只开放 http 服务和 ssh 服务，其余拒绝
 
+在 162.105.175.51 上修改规则：
+```
+iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+iptables -A OUTPUT -p tcp --sport 80 -j ACCEPT
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+iptables -A OUTPUT -p tcp --sport 22 -j ACCEPT
+iptables -P INPUT DROP
+iptables -P OUTPUT DROP
+```
 
+注意要在修改 INPUT 和 OUTPUT 的默认策略为 DROP 前，一定要设定 ssh 端口为 ACCEPT，否则会无法连接。
+
+![](https://github.com/cabbby/osprac/blob/master/hw3/pics/t2_1.png)
+
+查看现有规则：
+
+![](https://github.com/cabbby/osprac/blob/master/hw3/pics/t2_2.png)
+
+经测试，只能通过 ssh(22) 端口和 http(80) 端口访问机器。
 
 
 ## CPU 压力测试
