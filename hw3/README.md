@@ -10,6 +10,8 @@
 * INPUT 链包含 mangle, nat 表
 * OUTPUT 链包含 raw, mangle, nat, filter 表
 
+<br>
+
 ## iptables 测试
 
 ### 拒绝来自某一特定 IP 地址的访问
@@ -76,6 +78,8 @@ iptables -A OUTPUT -d 162.105.175.60 -p icmp --icmp-type echo-reply -j DROP
 
 可以验证，执行命令后，162.105.175.60 无法 ping 通本机。
 
+<br>
+
 ## "路由" 和 "交换" 的区别
 
 * 路由在网络层，路由器根据 IP 地址寻址；交换机在数据链路层，根据 MAC 地址寻址。路由器可以处理 TCP/IP 协议，交换机不可以。
@@ -83,6 +87,8 @@ iptables -A OUTPUT -d 162.105.175.60 -p icmp --icmp-type echo-reply -j DROP
 * 路由器将一个 IP 分配给多台机器使用，对外只表现为一个 IP；交换机将多个主机连接起来，每台主机对外有不同的 IP。
 
 * 路由器可以提供防火墙功能；交换机不可以。
+
+<br>
 
 ## fakeContainer 网络实现
 
