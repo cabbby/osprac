@@ -71,7 +71,7 @@ iptables -P OUTPUT DROP
 
 ### 拒绝回应来自某特定 IP 的 ping 命令
 
-在 162.106.175.60 上添加规则：
+在 162.105.175.61 上添加规则：
 ```
 iptables -A OUTPUT -d 162.105.175.60 -p icmp --icmp-type echo-reply -j DROP
 ```
