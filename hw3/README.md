@@ -2,6 +2,8 @@
 
 ## iptables 测试
 
+### 拒绝来自某一特定 IP 地址的访问
+
 在 162.105.175.60 上 ping 162.105.175.61:
 
 ![](https://github.com/cabbby/osprac/blob/master/hw3/pics/m1_1.png)
@@ -26,7 +28,11 @@
 
 ![](https://github.com/cabbby/osprac/blob/master/hw3/pics/m1_3.png)
 
-可以发现 ping 继续工作，说明规则删除成功。
+可以发现 ping 继续工作，说明规则删除成功。观察 icmp_seq 的变化可以得知中间的数据包即为被丢弃的包。
+
+通过另外测试可以验证，规则生效时主机的 ssh 等服务同样不能访问。
+
+### 只开放 http 服务和 ssh 服务，其余拒绝
 
 
 
