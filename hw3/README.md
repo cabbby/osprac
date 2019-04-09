@@ -2,14 +2,27 @@
 
 ## iptables 测试
 
-iptables -L -n --line-numbers 显示已有规则
+在 162.105.175.60 上 ping 162.105.175.61:
 
-在 162.105.175.60 上 ping 162.105.175.61
+![](https://github.com/cabbby/osprac/blob/master/hw3/pics/m1_1.png)
 
-在 162.105.175.61 上执行：iptables -A INPUT -s 162.105.175.60 -j DROP
+在 162.105.175.61 上添加规则：iptables -A INPUT -s 162.105.175.60 -j DROP
 
-在 INPUT 链上丢弃所有来自 162.105.175.60 的包
+在 INPUT 链上丢弃所有来自 162.105.175.60 的包：
 
+![](https://github.com/cabbby/osprac/blob/master/hw3/pics/m1_2.png)
+
+可以发现 ping 没有新的显示，说明 iptables 起效。
+
+在 162.105.175.61 上删除规则：iptables -D INPUT 5
+
+![](https://github.com/cabbby/osprac/blob/master/hw3/pics/m2_2.png)
+
+再观察 162.105.175.60 上的 ping 输出：
+
+![](https://github.com/cabbby/osprac/blob/master/hw3/pics/m1_3.png)
+
+可以发现 ping 继续工作，说明规则删除成功。
 
 
 
