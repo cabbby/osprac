@@ -28,8 +28,21 @@ Leader 选举遵循以下规则：
 
 Leader 接收来自 Client 的请求，将其写入日志，通过下次 Heartbeat 信息告知其它节点。得到其它节点的确认信息后，Leader 应用这一请求，通过 Heartbeat 告知其它节点应用请求。
 
+<br>
+
 场景模拟：
 
+共 4 个节点，最初所有节点都是 Follower。
+
+节点 1、2 同时到达超时时限，向其它节点发出 RequestVote 信息。
+
+节点 3 回应节点 1 的请求，节点 4 回应节点 2 的请求。
+
+节点 1、2 都未得到超过半数票，进入下一个选举周期。
+
+节点 3 最先到达时限，向其它节点发出 RequestVote 信息。
+
+节点 1、2、4 回应节点 3 的请求，节点 3 成为 Leader。
 
 
 
@@ -62,7 +75,7 @@ AUFS 是一种联合文件系统，支持将不同物理位置的文件夹合并
 
 安装并启动 glusterfs：
 
-```
+``` bash
 sudo apt install glusterfs-server
 
 sudo systemctl start glusterfs-server
@@ -71,26 +84,26 @@ sudo systemctl enable glusterfs-server
 
 在 gfs01 上：
 
-```
+``` bash
 sudo gluster peer probe gfs02
 ```
 
 在两台机器上：
 
-```
+``` bash
 sudo mkdir -p /glusterfs/distributed
 ```
 
 在 gfs01 上：
 
-```
+``` bash
 # 创建 replicated volume
 sudo gluster volume create v01 replica 2 transport tcp gfs01:/glusterfs/distributed gfs02:/glusterfs/distributed force
 ```
 
 在容器中：
 
-```
+``` bash
 # 创建 /dev/fuse （LXC 容器中需手动添加）
 sudo mknod /dev/fuse c 10 229 
 
@@ -104,7 +117,7 @@ sudo mount -t glusterfs gfs01:/v01 /mnt/glusterfs/
 
 在容器中运行：
 
-```
+``` bash
 touch /mnt/glusterfs/a
 touch /mnt/glusterfs/b
 ```
@@ -113,7 +126,7 @@ touch /mnt/glusterfs/b
 
 将 gfs01 关机，再在容器中运行：
 
-```
+``` bash
 touch /mnt/glusterfs/c
 ```
 
@@ -123,7 +136,7 @@ touch /mnt/glusterfs/c
 
 以下命令均在 root 下执行：
 
-```
+``` bash
 # 创建两个容器
 lxc-create -n cont1 -t ubuntu
 lxc-create -n cont2 -t ubuntu
