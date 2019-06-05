@@ -1,0 +1,35 @@
+#!/bin/bash
+
+lxc-create -n $1 -t none
+mkdir /var/lib/lxc/$1/rootfs
+mkdir -p /root/cont/$1/usrfile/workspace
+mount -t aufs -o dirs=/root/cont/$1/usrfile:/root/img/$4 none /var/lib/lxc/$1/rootfs
+
+# config
+cat>>/var/lib/lxc/$1/config<<EOF
+
+# Common configuration
+lxc.include = /usr/share/lxc/config/$4.common.conf
+
+# Container specific configuration
+lxc.rootfs = /var/lib/lxc/$1/rootfs
+lxc.rootfs.backend = dir
+lxc.utsname = $1
+lxc.arch = amd64
+
+# Cgroup
+lxc.cgroup.cpuset.cpus = $2
+lxc.cgroup.memory.limit_in_bytes = $3
+EOF
+
+# dns
+cat>>/etc/resolv.conf<<EOF
+nameserver 162.105.129.26
+EOF
+
+# hostname
+cat>/var/lib/lxc/$1/rootfs/etc/hostname<<EOF
+$1
+EOF
+
+lxc-start -n $1

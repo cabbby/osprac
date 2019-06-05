@@ -1,0 +1,19 @@
+#!/bin/bash
+
+cat>>/etc/hosts<<EOF
+162.105.175.60 gfs01
+162.105.175.61 gfs02
+EOF
+
+apt install glusterfs-server
+systemctl start glusterfs-server
+systemctl enable glusterfs-server
+
+mkdir -p /root/glusterfs/share
+
+gluster peer probe gfs02
+gluster volume create v01 gfs01:/root/glusterfs/share force
+gluster volume start v01
+
+mkdir -p /mnt/share
+mount -t glusterfs gfs01:/v01 /mnt/share

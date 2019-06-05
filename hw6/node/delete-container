@@ -1,0 +1,6 @@
+#!/bin/bash
+
+lxc-stop -n $1
+umount /var/lib/lxc/$1/rootfs
+lxc-destroy -n $1
+rm -rf /root/cont/$1
