@@ -1,5 +1,17 @@
 # 操统实习 期末Project报告
 
+## 效果展示
+
+Web界面
+
+![](https://github.com/cabbby/osprac/blob/master/hw6/pics/ui1.png)
+
+![](https://github.com/cabbby/osprac/blob/master/hw6/pics/ui2.png)
+
+任务详情页面
+
+![](https://github.com/cabbby/osprac/blob/master/hw6/pics/details.png)
+
 ## 整体架构
 
 ![](https://github.com/cabbby/osprac/blob/master/hw6/pics/structure.png)
