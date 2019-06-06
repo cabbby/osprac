@@ -2,4 +2,4 @@
 
 ## 整体架构
 
-
+![](https://github.com/cabbby/osprac/blob/master/hw6/pics/structure.png)
