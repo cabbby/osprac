@@ -31,6 +31,28 @@
 * task_stdout：任务标准输出流
 * task_stderr：任务标准错误流
 
+## 代码结构
+
+采用Python和Bash脚本语言编写
+
+- Master
+    * master/config-glusterfs-master：在Master上初始化存储所用脚本
+    * master/MasterServer.py：Master的Web服务实现
+    * master/MasterMonitor.py：Master后台逻辑的实现
+    * master/MasterProfile.py：保存Master的一些配置
+    * master/JobTable.py：将任务列表解析为HTML表格的辅助类
+    * master/NodeTable.py：将Node列表解析为HTML表格的辅助类
+    * master/templates/：包含渲染Web界面所用HTML模板
+
+- Node
+    * node/config-glusterfs-node：在Node上初始化存储所用脚本
+    * node/create-container：在Node上创建并配置一个容器所用脚本
+    * node/delete-container：在Node上删除一个容器所用脚本
+    * node/NodeServer.py：Node的Web服务实现
+    * node/NodeMonitor.py：Node后台逻辑的实现
+    * node/NodeProfile.py：保存Node的一些配置
+    * node/TaskMonitor.py：用作任务守护进程
+
 ## Master
 
 分为两个线程：HTTP服务器线程，数据更新线程
@@ -88,9 +110,9 @@ HTTP服务器线程响应来自用户的HTTP请求，支持 HTTP API:
 
 每台Node机器上/root/img目录下存储所有镜像
 
-/root/cont/[condId]/usrfile作为可写层
+/root/cont/[contId]/usrfile作为可写层
 
-/root/cont/[condId]/usrfile/workspace为用户命令的执行目录
+/root/cont/[contId]/usrfile/workspace为用户命令的执行目录
 
 使用AUFS将基本镜像和用户文件挂载为容器的rootfs
 
